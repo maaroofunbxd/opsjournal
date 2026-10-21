@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opsjournal"
+dynamic = ["version"]
+description = "An audit log of every run of a CLI and every write it made to a live system, and who did it: you, an AI agent or a runner."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+dependencies = [
+    "typer>=0.15.0",
+    "rich",
+    "agentboard",
+]
+
+[project.scripts]
+opsjournal = "opsjournal.cli:main"
+
+[dependency-groups]
+dev = ["pytest", "ruff"]
+
+# agentboard (who is an agent, the session name) is not on PyPI: pinned here by tag.
+[tool.uv.sources]
+agentboard = { git = "https://github.com/maaroofunbxd/agentboard", tag = "v0.4.0" }
+
+[tool.setuptools.dynamic]
+version = { attr = "opsjournal.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "W"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["opsjournal"]
